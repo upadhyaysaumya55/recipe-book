@@ -1,0 +1,121 @@
+/* Container Setup */
+.new-email-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f3f3f3;
+    background-image: url('../assets/create.png');
+    background-size: cover;
+  }
+  
+  /* Form Box Styling */
+  .new-email-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+  }
+  
+  /* Heading */
+  .new-email-box h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: left;
+  }
+  
+  /* Email + Domain Row */
+  .email-field {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-direction: row;
+  }
+  
+  /* Email Input */
+  .email-field input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  
+  /* Dropdown */
+  .email-field select {
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    min-width: 130px;
+    box-sizing: border-box;
+  }
+  
+  /* Error Message */
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Link Styling */
+  .email-link {
+    margin-bottom: 20px;
+  }
+  
+  .email-link a {
+    color: #0078d4;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .email-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Next Button */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background-color: #005ea2;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .new-email-box {
+      padding: 25px 20px;
+    }
+  
+    .email-field {
+      flex-direction: column;
+    }
+  
+    .email-field select {
+      width: 100%;
+    }
+  
+    .new-email-box h2 {
+      font-size: 20px;
+    }
+  
+    button {
+      font-size: 15px;
+    }
+  }
+  

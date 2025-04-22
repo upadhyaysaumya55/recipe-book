@@ -1,0 +1,209 @@
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.hero {
+  width: 100vw;
+  height: 130vh;
+  background-image: url('../assets/hero-books.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  position: relative;
+  padding: 20px;
+  margin: 0;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  max-width: 60%;
+}
+
+.hero-image {
+  flex: 1;
+  text-align: right;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  max-width: 600px;
+  border-radius: 10px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1cb2b5;
+}
+
+.hero-content h1 span {
+  color: #1cb2b5;
+}
+
+.hero-content p {
+  margin: 20px 0;
+  font-size: 1.5rem;
+  font-style: inherit;
+  line-height: 1.6;
+}
+
+.hero-content p span {
+  font-weight: bolder;
+  font-style: oblique;
+  color: #08c3fb;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 40%;
+}
+
+.hero-buttons button {
+  padding: 12px;
+  border: none;
+  font-size: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.hero-buttons .order {
+  background-color: #0a621e;
+  color: rgba(145, 45, 45, 0.826);
+  width: 10%;
+}
+
+.hero-buttons :hover {
+  background-color: #1fb2db;
+}
+
+.hero-buttons .reserve {
+  background-color: #993a17;
+  color: rgb(23, 104, 49);
+  
+}
+
+.hero-buttons button:hover {
+  transform: scale(1.05);
+}
+
+/* Chef Image Box on Top Right */
+.chef-box {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/chef-saumya.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+.chef-img {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  margin-bottom: auto;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.chef-img:hover {
+  transform: scale(1.05);
+}
+
+.chef-name {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+}
+
+
+@media screen and (max-width: 768px) {
+  .chef-box {
+    top: 60px;
+    right: 20px;
+  }
+
+  .chef-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .chef-name {
+    font-size: 12px;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .hero-buttons button {
+    width: 100%;
+  }
+
+  body {
+    background-size: cover;
+    background-position: top;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  body {
+    background-attachment: scroll; /* Prevent scrolling issues on mobile */
+    background-position: center;
+  }
+}
+

@@ -1,0 +1,42 @@
+.about-section {
+    width: 100%;
+    padding: 80px 20px;
+    background-color: #fff8f2;
+    background-image: url('../assets/about.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .about-container {
+    max-width: 900px;
+    text-align: center;
+  }
+  
+  .about-container h2 {
+    font-size: 2.5rem;
+    color: #d35400;
+    margin-bottom: 20px;
+  }
+  
+  .about-container p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #fcf9f9;
+    margin-bottom: 140px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-container h2 {
+      font-size: 2rem;
+    }
+  
+    .about-container p {
+      font-size: 1rem;
+    }
+  }
+  
