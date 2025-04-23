@@ -5,6 +5,7 @@
     min-height: 100vh;
     background: linear-gradient(to right, #f8f8f8, #e0e0e0);
     background-image: url('../assets/login.png');
+    background-size: cover;
     padding: 20px;
   }
   
