@@ -1,4 +1,3 @@
-/* Container */
 .careers-container {
     max-width: 100%;
     margin: 0 auto;
@@ -100,8 +99,8 @@
   @media (max-width: 600px) {
     .careers-container {
         padding: 60px 15px;
-        background-attachment: scroll; /* Fix for mobile background issues */
-        background-size: cover;        /* Ensure background scales well */
+        background-attachment: scroll;
+        background-size: cover;
         background-position: center top;
     }
 

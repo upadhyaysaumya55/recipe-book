@@ -112,54 +112,6 @@ body, html, #root {
   transform: scale(1.05);
 }
 
-/* Chef Image Box on Top Right */
-.chef-box {
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('../assets/chef-saumya.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 3;
-}
-
-.chef-img {
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  margin-bottom: auto;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease;
-}
-
-.chef-img:hover {
-  transform: scale(1.05);
-}
-
-.chef-name {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-}
-
-
 @media screen and (max-width: 768px) {
   .chef-box {
     top: 60px;
@@ -202,7 +154,7 @@ body, html, #root {
 
 @media screen and (max-width: 1024px) {
   body {
-    background-attachment: scroll; /* Prevent scrolling issues on mobile */
+    background-attachment: scroll;
     background-position: center;
   }
 }

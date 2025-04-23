@@ -8,9 +8,8 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Add authentication logic here (API call, validation, etc.)
     alert('Logged in successfully!');
-    navigate('/'); // Redirect to homepage after login
+    navigate('/');
   };
 
   return (

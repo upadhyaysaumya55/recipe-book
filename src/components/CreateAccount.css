@@ -20,7 +20,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem; /* Reduced from 20rem */
+    padding: 2rem;
     width: 100%;
     min-height: 100vh;
     background-image: url('../assets/create.png');

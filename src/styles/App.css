@@ -17,9 +17,9 @@ body, html, #root {
   
   .container {
     width: 100%;
-    max-width: 2400px; /* Set a large max-width for larger screens */
-    margin: 0;    /* Center the container */
-    padding: 0;   /* Add padding to the left and right */
+    max-width: 2400px;
+    margin: 0;
+    padding: 0;
     text-align: center;
   }
   
@@ -63,7 +63,7 @@ body, html, #root {
   
   .recipe-card {
     width: 100%;
-    max-width: 300px; /* Add max width */
+    max-width: 300px;
     border: 1px solid #ddd;
     border-radius: 0;
     overflow: hidden;
@@ -91,17 +91,17 @@ body, html, #root {
   /* Responsive */
   @media (max-width: 768px) {
     body, html {
-      margin: 0; /* Remove any margin */
-      padding: 0; /* Remove any padding */
+      margin: 0;
+      padding: 0;
     }
   
     .container {
-      padding: 0; /* Reduce container padding */
+      padding: 0;
     }
   
     .recipe-card {
       width: 100%;
-      max-width: none; /* Allow full-width in smaller screens */
+      max-width: none;
     }
   }
   

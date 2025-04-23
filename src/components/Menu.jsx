@@ -1,4 +1,3 @@
-// src/components/Menu.jsx
 import React from 'react';
 import RecipeCard from './RecipeCard';
 import './Menu.css';
