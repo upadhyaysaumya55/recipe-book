@@ -1,23 +1,42 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+/node_modules/
 
-# testing
-/coverage
+# production build
+/build/
+/dist/
 
-# production
-/build
-
-# misc
-.DS_Store
+# dotenv environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Editor folders
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: coverage reports
+coverage/
+
+# Optional: parcel or other bundlers
+.cache/
+
+# Optional: firebase, vercel, or netlify settings
+.firebase/
+.vercel/
+.netlify/
+
+# Optional: misc
+*.local
+*.swo
+*.swp
