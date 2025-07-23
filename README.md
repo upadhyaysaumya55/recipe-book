@@ -23,8 +23,6 @@ A modern, responsive Recipe Book web application built using **React** that allo
 
 ## 📸 Demo
 
-![App Screenshot](./assets/recipe-book-screenshot.png)
-
 [Live Demo 🚀](https://recipe-book-gilt-two.vercel.app/)  
 _Replace with your actual deployed link._
 
