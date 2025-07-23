@@ -1,40 +1,110 @@
-import React from "react";
-import "./HeroSection.css";
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { motion } from "framer-motion";
+import { FaUtensils, FaConciergeBell } from "react-icons/fa";
+import { MdOutlineFastfood } from "react-icons/md";
+
+const foodEmojis = ["🍕", "🍔", "🍜", "🍩", "🍣", "🥗", "🍰", "🍛", "🍟", "🍿"];
 
 const HeroSection = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1200, once: true });
+  }, []);
+
+  const scrollToRecipeForm = () => {
+    const formSection = document.getElementById("recipe-form");
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <div className="hero">
+    <div
+      className="relative bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center overflow-hidden"
+      id="hero"
+    >
+      {/* Blurred Glow Circles */}
+      <div className="absolute w-72 h-72 bg-yellow-500 opacity-20 blur-3xl rounded-full top-10 left-10 animate-pulse"></div>
+      <div className="absolute w-72 h-72 bg-pink-600 opacity-20 blur-3xl rounded-full bottom-10 right-10 animate-pulse"></div>
 
-      <div className="navbar">
-        <div className="logo">Saumya's Kitchen</div>
-        <div className="nav-links">
-          <a href="./Home">Home</a>
-          <a href="./About">About</a>
-          <a href="./Menu">Menu</a>
-          <a href="./Shop">Shop</a>
-          <a href="./Pages">Pages</a>
-          <a href="./Reservation">Reservation</a>
+      {/* Floating Food Emojis */}
+      {foodEmojis.map((emoji, index) => (
+        <div
+          key={index}
+          className="absolute text-3xl md:text-4xl lg:text-5xl animate-float-slow select-none pointer-events-none"
+          style={{
+            top: `${Math.random() * 90}%`,
+            left: `${Math.random() * 90}%`,
+            animationDelay: `${index * 2}s`,
+            opacity: 0.1 + Math.random() * 0.2,
+          }}
+        >
+          {emoji}
         </div>
-        <div className="menu-button">&#9776;</div>
-      </div>
+      ))}
 
-      <div className="hero-content">
-        <h1>
+      {/* Main Container */}
+      <motion.div
+        className="relative z-10 max-w-5xl px-6 py-32 text-center"
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <motion.h1
+          data-aos="fade-up"
+          className="text-4xl md:text-6xl font-extrabold leading-tight mb-6"
+        >
           Discover Tasty Recipes for Every{" "}
-        Mood
-        </h1>
-        <p>
-          From quick bites to gourmet meals, <span className="highlight-blue">Saumya's Kitchen</span> brings you handpicked recipes
-          loved by home chefs and foodies alike. Explore, cook, and share your
-          delicious creations with the community.
-        </p>
+          <span className="text-yellow-400">Mood</span>
+        </motion.h1>
 
-        <div className="hero-buttons">
-          <button className="blue-btn">Online Ordering</button>
-          <button className="blue-btn">Reserve Table</button>
+        <motion.p
+          data-aos="fade-up"
+          data-aos-delay="200"
+          className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
+        >
+          From quick bites to gourmet meals,{" "}
+          <span className="text-yellow-400 font-semibold">Saumya's Kitchen</span>{" "}
+          brings you handpicked recipes loved by home chefs and foodies alike.
+          Explore, cook, and share your delicious creations with the community.
+        </motion.p>
+
+        {/* Buttons */}
+        <div
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          data-aos="zoom-in-up"
+          data-aos-delay="400"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold transition duration-300 hover:bg-yellow-300 shadow-xl"
+          >
+            <FaUtensils className="text-xl" />
+            Online Ordering
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 border border-yellow-400 text-yellow-400 px-6 py-3 rounded-full font-semibold transition duration-300 hover:bg-yellow-400 hover:text-black shadow-xl"
+          >
+            <FaConciergeBell className="text-xl" />
+            Reserve Table
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={scrollToRecipeForm}
+            className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold transition duration-300 hover:bg-green-400 shadow-xl"
+          >
+            <MdOutlineFastfood className="text-xl" />
+            Add New Recipe
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

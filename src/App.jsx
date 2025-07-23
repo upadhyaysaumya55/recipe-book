@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 import Navbar from './components/Navbar';
+import SearchBar from './components/SearchBar';
 import RecipeForm from './components/RecipeForm';
 import RecipeCard from './components/RecipeCard';
-import SearchBar from './components/SearchBar';
 import HeroSection from './components/HeroSection';
 import HowItWorks from './components/HowItWorks';
 import ComplementaryFeatures from './components/ComplementaryFeatures';
@@ -13,43 +16,90 @@ import Shop from './components/Shop';
 import Blog from './components/Blog';
 import Gallery from './components/Gallery';
 import Careers from './components/Careers';
-import Cart from './components/Cart'
+import Cart from './components/Cart';
 import Reservation from './components/Reservation';
 import Login from './components/Login';
 import CreateAccount from './components/CreateAccount';
 import NewEmail from './components/NewEmail';
 import EditRecipe from './components/EditRecipe';
 import Testimonials from "./components/Testimonials";
+import Contact from './components/Contact';
+import Footer from './components/Footer';
 
+// ✅ Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
+// ✅ Home component with Add Recipe scroll support and working SearchBar
 function Home({ recipes, setRecipes, search, setSearch, addRecipe }) {
-  const filteredRecipes = recipes.filter(recipe =>
-    recipe.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+
+  // Sync filteredRecipes whenever recipes change
+  useEffect(() => {
+    setFilteredRecipes(
+      recipes.filter(recipe =>
+        recipe.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [recipes, search]);
+
+  const handleSearch = (query) => {
+    setSearch(query);
+    const filtered = recipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredRecipes(filtered);
+  };
 
   return (
     <>
       <HeroSection />
       <HowItWorks />
       <ComplementaryFeatures />
-      <Navbar />
 
-      <h1>Recipe Book</h1>
-      <SearchBar search={search} setSearch={setSearch} />
-      <RecipeForm addRecipe={addRecipe} />
+      <section className="bg-gradient-to-b from-[#101018] to-[#0d0d12] py-12 px-4 text-white">
+        <div className="max-w-6xl mx-auto">
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            onSearch={handleSearch} // ✅ Pass working onSearch
+          />
+
+          {/* ✅ Form section with ID for scroll target */}
+          <div className="mt-10" id="recipe-form">
+            <RecipeForm addRecipe={addRecipe} />
+          </div>
+
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold mb-6 text-center text-teal-400" data-aos="fade-up">
+              Browse Recipes
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredRecipes.length ? (
+                filteredRecipes.map((recipe, index) => (
+                  <RecipeCard key={index} recipe={recipe} />
+                ))
+              ) : (
+                <p className="text-center col-span-full text-gray-300">No recipes found</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Testimonials recipes={recipes} />
-      <div className="recipes">
-        {filteredRecipes.length ? (
-          filteredRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} />
-          ))
-        ) : (
-          <p>No recipes found</p>
-        )}
-      </div>
+      <Contact />
+      <Footer />
     </>
   );
 }
 
+// ✅ Main App component
 function App() {
   const [recipes, setRecipes] = useState(() => {
     const stored = localStorage.getItem('recipes');
@@ -62,13 +112,20 @@ function App() {
     localStorage.setItem('recipes', JSON.stringify(recipes));
   }, [recipes]);
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
   const addRecipe = (newRecipe) => {
     setRecipes([newRecipe, ...recipes]);
   };
 
   return (
     <Router>
-      <div className="container">
+      <ScrollToTop />
+      <Navbar />
+
+      <div className="font-sans bg-black min-h-screen text-white pt-20">
         <Routes>
           <Route
             path="/"
