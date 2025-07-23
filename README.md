@@ -1,3 +1,48 @@
+# 🍲 Recipe Book App
+
+A modern, responsive Recipe Book web application built using **React** that allows users to browse, add, edit, delete, and search recipes. Includes user authentication, category filtering, testimonial section, contact form, and persistent local storage.
+
+---
+
+## 🌟 Features
+
+- ✅ User Signup & Login system (with modals)
+- ✅ Create, Edit, Delete own recipes
+- ✅ Search recipes by name or ingredients
+- ✅ Filter recipes by category
+- ✅ Store recipes in browser `localStorage`
+- ✅ Show popular recipes and testimonials
+- ✅ Fully responsive design
+- ✅ Page routing for Home, Menu, Blog, Gallery, Careers, and Contact
+- ✅ Smooth scroll animations with AOS
+- ✅ Stylish animations with Framer Motion
+- ✅ Download app section
+- ✅ Footer with social links and email contact
+
+---
+
+## 📸 Demo
+
+![App Screenshot](./assets/recipe-book-screenshot.png)
+
+[Live Demo 🚀](https://recipe-book-gilt-two.vercel.app/)  
+_Replace with your actual deployed link._
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React, HTML5, CSS3, JavaScript (ES6+)
+- **Styling:** Tailwind CSS
+- **State Management:** React Hooks (`useState`, `useEffect`)
+- **Routing:** React Router DOM
+- **Animations:** AOS (Animate on Scroll), Framer Motion
+- **Persistence:** localStorage
+
+---
+
+## 📂 Folder Structure
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
