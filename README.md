@@ -1,4 +1,4 @@
-# 🍲 Recipe Book App
+# 🍲 Recipe Book Website
 
 A modern, responsive Recipe Book web application built using **React** that allows users to browse, add, edit, delete, and search recipes. Includes user authentication, category filtering, testimonial section, contact form, and persistent local storage.
 
