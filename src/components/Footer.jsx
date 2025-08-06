@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
         {/* Branding */}
         <div>
-          <h3 className="text-teal-400 text-xl font-semibold mb-3">RecipeVerse</h3>
+          <h3 className="text-teal-400 text-xl font-semibold mb-3">Saumya'sKitchen</h3>
           <p className="text-sm">© {new Date().getFullYear()} All rights reserved.</p>
         </div>
 
