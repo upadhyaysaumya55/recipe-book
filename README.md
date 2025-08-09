@@ -29,7 +29,7 @@ A modern, responsive Recipe Book web application built using **React** that allo
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, HTML5, CSS3, JavaScript (ES6+)
+- **Frontend:** React, HTML5, Tailwind CSS, JavaScript (ES6+)
 - **Styling:** Tailwind CSS with custom utility classes (e.g., hover effects, glow animations, etc)
 - **State Management:** React Hooks (`useState`, `useEffect`)
 - **Routing:** React Router DOM
