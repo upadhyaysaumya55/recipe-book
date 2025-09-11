@@ -1,19 +1,39 @@
 // src/components/SearchBar.jsx
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { motion } from 'framer-motion';
-import { FaSearch } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { motion } from "framer-motion";
+import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ search, setSearch, onSearch }) => {
+const SearchBar = ({ search, setSearch }) => {
+  const [input, setInput] = useState(search || "");
+  const navigate = useNavigate();
+
   useEffect(() => {
     AOS.init({ duration: 800 });
   }, []);
 
+  useEffect(() => {
+    setInput(search);
+  }, [search]);
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSearch) {
-      onSearch(search); // Trigger search handler
+    const query = input.trim();
+
+    // update parent search state
+    setSearch(query);
+
+    // ✅ redirect to menu page with search query
+    if (query) {
+      navigate(`/menu?search=${encodeURIComponent(query)}`);
+    } else {
+      navigate(`/menu`);
     }
   };
 
@@ -29,8 +49,8 @@ const SearchBar = ({ search, setSearch, onSearch }) => {
         <motion.input
           type="text"
           placeholder="Search recipes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={input}
+          onChange={handleChange}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -39,6 +59,7 @@ const SearchBar = ({ search, setSearch, onSearch }) => {
             focus:outline-none focus:ring-2 focus:ring-yellow-400
             transition-all duration-300 ease-in-out hover:shadow-yellow-500/20"
         />
+
         <motion.button
           type="submit"
           whileTap={{ scale: 0.9 }}

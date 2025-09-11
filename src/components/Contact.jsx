@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import emailjs from 'emailjs-com';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const floatingEmojis = [
   { emoji: '💌', top: '10%', left: '5%', delay: 0 },
@@ -15,8 +18,48 @@ const Contact = () => {
     AOS.init({ duration: 1000 });
   }, []);
 
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        'service_92nmtqk', // your EmailJS service ID
+        'template_jjgkr79', // your EmailJS template ID
+        e.target,
+        'dXcUuj_oHJoLr6CM9' // your EmailJS public key
+      )
+      .then(
+        (result) => {
+          toast.success('Message sent successfully!', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          e.target.reset(); // clear form
+        },
+        (error) => {
+          toast.error('Failed to send message: ' + error.text, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      );
+  };
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white px-6 py-16 overflow-hidden">
+      {/* Toast Container */}
+      <ToastContainer />
+
       {/* Floating Emojis */}
       {floatingEmojis.map((item, index) => (
         <motion.div
@@ -64,6 +107,7 @@ const Contact = () => {
         </p>
 
         <form
+          onSubmit={sendEmail}
           className="bg-gray-800 p-10 rounded-2xl shadow-2xl space-y-6"
           data-aos="fade-up"
         >
@@ -72,6 +116,7 @@ const Contact = () => {
               <label className="block text-sm font-semibold text-gray-300 mb-1">Name</label>
               <input
                 type="text"
+                name="user_name"
                 placeholder="John Doe"
                 className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all duration-300"
                 required
@@ -82,6 +127,7 @@ const Contact = () => {
               <label className="block text-sm font-semibold text-gray-300 mb-1">Email</label>
               <input
                 type="email"
+                name="user_email"
                 placeholder="john@example.com"
                 className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all duration-300"
                 required
@@ -93,6 +139,7 @@ const Contact = () => {
             <label className="block text-sm font-semibold text-gray-300 mb-1">Subject</label>
             <input
               type="text"
+              name="subject"
               placeholder="Subject"
               className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all duration-300"
               required
@@ -102,6 +149,7 @@ const Contact = () => {
           <div data-aos="zoom-in-up">
             <label className="block text-sm font-semibold text-gray-300 mb-1">Message</label>
             <textarea
+              name="message"
               rows="6"
               placeholder="Type your message here..."
               className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all duration-300"
@@ -112,6 +160,7 @@ const Contact = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
+            type="submit"
             className="w-full py-3 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold tracking-wide transition-all duration-300 shadow-md"
           >
             Send Message

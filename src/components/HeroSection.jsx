@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { motion } from "framer-motion";
-import { FaUtensils, FaConciergeBell } from "react-icons/fa";
+import { FaShoppingCart, FaConciergeBell } from "react-icons/fa"; // ✅ updated icon
 import { MdOutlineFastfood } from "react-icons/md";
+import { useNavigate } from "react-router-dom"; // ✅ import useNavigate
 
 const foodEmojis = ["🍕", "🍔", "🍜", "🍩", "🍣", "🥗", "🍰", "🍛", "🍟", "🍿"];
 
 const HeroSection = () => {
+  const navigate = useNavigate(); // ✅ initialize navigate
+
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
@@ -17,6 +20,14 @@ const HeroSection = () => {
     if (formSection) {
       formSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const goToReservation = () => {
+    navigate("/reservation"); // ✅ navigate to reservation page
+  };
+
+  const goToShop = () => {
+    navigate("/shop"); // ✅ navigate to shop page
   };
 
   return (
@@ -79,15 +90,17 @@ const HeroSection = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={goToShop} // ✅ navigate to shop page
             className="flex items-center gap-2 bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold transition duration-300 hover:bg-yellow-300 shadow-xl"
           >
-            <FaUtensils className="text-xl" />
+            <FaShoppingCart className="text-xl" /> {/* ✅ updated icon */}
             Online Ordering
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={goToReservation} // ✅ navigate to reservation page
             className="flex items-center gap-2 border border-yellow-400 text-yellow-400 px-6 py-3 rounded-full font-semibold transition duration-300 hover:bg-yellow-400 hover:text-black shadow-xl"
           >
             <FaConciergeBell className="text-xl" />

@@ -1,3 +1,4 @@
+// src/components/Testimonials.jsx
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -8,13 +9,24 @@ const Testimonials = () => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const [testimonials, setTestimonials] = useState([]);
+  // ✅ Load testimonials from localStorage or initialize empty array
+  const [testimonials, setTestimonials] = useState(() => {
+    const stored = localStorage.getItem("testimonials");
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     text: "",
     location: "",
   });
   const [error, setError] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  // ✅ Keep localStorage in sync whenever testimonials change
+  useEffect(() => {
+    localStorage.setItem("testimonials", JSON.stringify(testimonials));
+  }, [testimonials]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,13 +35,32 @@ const Testimonials = () => {
       return;
     }
 
-    const newTestimonial = {
-      ...formData,
-    };
+    if (editingIndex !== null) {
+      // Update existing testimonial
+      const updatedTestimonials = [...testimonials];
+      updatedTestimonials[editingIndex] = { ...formData };
+      setTestimonials(updatedTestimonials);
+      setEditingIndex(null);
+    } else {
+      // Add new testimonial with unique ID
+      setTestimonials([{ ...formData, id: Date.now() }, ...testimonials]);
+    }
 
-    setTestimonials([newTestimonial, ...testimonials]);
     setFormData({ name: "", text: "", location: "" });
     setError("");
+  };
+
+  const handleEdit = (index) => {
+    setFormData(testimonials[index]);
+    setEditingIndex(index);
+    // Removed scroll to top to prevent jumping
+  };
+
+  const handleDelete = (index) => {
+    if (window.confirm("❌ Are you sure you want to delete this testimonial?")) {
+      const updatedTestimonials = testimonials.filter((_, i) => i !== index);
+      setTestimonials(updatedTestimonials);
+    }
   };
 
   return (
@@ -49,7 +80,9 @@ const Testimonials = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <h3 className="text-2xl mb-4 font-semibold text-white">Add a Testimonial</h3>
+          <h3 className="text-2xl mb-4 font-semibold text-white">
+            {editingIndex !== null ? "Edit Testimonial" : "Add a Testimonial"}
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
               type="text"
@@ -77,7 +110,7 @@ const Testimonials = () => {
             type="submit"
             className="mt-4 px-6 py-2 bg-pink-500 hover:bg-pink-600 transition rounded font-semibold"
           >
-            Submit
+            {editingIndex !== null ? "Update" : "Submit"}
           </button>
           {error && (
             <p className="text-red-400 mt-4 font-semibold" data-aos="fade-in">
@@ -94,16 +127,30 @@ const Testimonials = () => {
           ) : (
             testimonials.map((testimonial, index) => (
               <motion.div
-                key={index}
+                key={testimonial.id}
                 className="bg-gray-800 p-6 rounded-lg shadow-md"
                 data-aos="zoom-in"
                 whileHover={{ scale: 1.05 }}
               >
                 <p className="text-gray-200 mb-4">"{testimonial.text}"</p>
-                <h4 className="text-lg font-bold text-pink-300">
-                  {testimonial.name}
-                </h4>
-                <p className="text-sm text-gray-400">{testimonial.location}</p>
+                <h4 className="text-lg font-bold text-pink-300">{testimonial.name}</h4>
+                <p className="text-sm text-gray-400 mb-4">{testimonial.location}</p>
+
+                {/* ✅ Edit & Delete buttons below the testimonial */}
+                <div className="flex justify-end gap-2 mt-2">
+                  <button
+                    onClick={() => handleEdit(index)}
+                    className="px-2 py-1 bg-yellow-500 hover:bg-yellow-400 text-black rounded text-sm"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
               </motion.div>
             ))
           )}

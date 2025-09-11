@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { Link } from 'react-router-dom';
+// src/pages/CreateAccount.jsx
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ✅ use AuthContext
 
 const CreateAccount = () => {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState(() => localStorage.getItem('newAccountEmail') || '');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const { register } = useAuth(); // ✅ from AuthContext
 
   useEffect(() => {
     AOS.init({ duration: 800 });
@@ -17,26 +22,31 @@ const CreateAccount = () => {
 
   const handleNext = () => {
     if (step === 1 && !email) {
-      setError('Email is required');
+      setError("Email is required");
     } else if (step === 2 && !password) {
-      setError('Password is required');
+      setError("Password is required");
     } else if (step === 3 && !name) {
-      setError('Full name is required');
+      setError("Full name is required");
     } else {
-      setError('');
+      setError("");
       setStep((prev) => prev + 1);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!name) {
-      setError('Full name is required');
+      setError("Full name is required");
       return;
     }
-    setError('');
-    console.log('Account created:', { email, password, name });
-    alert('Account created successfully!');
+
+    try {
+      register({ email, password, name }); // ✅ updates localStorage + context
+      navigate("/"); // ✅ redirect to homepage
+    } catch (err) {
+      setError(err.message); // ✅ show AuthContext error (like email exists)
+    }
   };
 
   return (
@@ -66,7 +76,10 @@ const CreateAccount = () => {
               />
               {error && <p className="text-red-400 mt-2">{error}</p>}
               <div className="text-sm text-right mt-2">
-                <Link to="/new-email" className="text-purple-400 hover:underline">
+                <Link
+                  to="/new-email"
+                  className="text-purple-400 hover:underline"
+                >
                   Get a new email address
                 </Link>
               </div>
