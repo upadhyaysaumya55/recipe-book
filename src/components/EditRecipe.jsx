@@ -1,26 +1,26 @@
-// src/components/EditRecipe.jsx
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { motion } from "framer-motion";
 
 const EditRecipe = ({ recipes, setRecipes }) => {
-  const { id } = useParams(); // id = index from URL
+  const { id } = useParams(); // id from URL (recipe.id)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: '',
-    ingredients: '',
-    steps: '',
-    category: '',
+    name: "",
+    ingredients: "",
+    steps: "",
+    category: "",
+    image: "",
   });
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
 
-    // ✅ Get recipe by index
-    const recipe = recipes[Number(id)];
+    // ✅ Find recipe by its unique id
+    const recipe = recipes.find((r) => r.id === Number(id));
     if (recipe) {
       setFormData(recipe);
     }
@@ -33,15 +33,15 @@ const EditRecipe = ({ recipes, setRecipes }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ Update recipe in array using index
-    const updated = recipes.map((r, index) =>
-      index === Number(id) ? { ...formData } : r
+    // ✅ Update recipe in array by matching id
+    const updatedRecipes = recipes.map((r) =>
+      r.id === Number(id) ? { ...formData, id: Number(id) } : r
     );
 
-    setRecipes(updated);
-    localStorage.setItem('recipes', JSON.stringify(updated));
+    setRecipes(updatedRecipes);
+    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
 
-    navigate('/'); // Go back to home
+    navigate("/menu"); // Go back to Menu
   };
 
   return (
@@ -71,7 +71,7 @@ const EditRecipe = ({ recipes, setRecipes }) => {
             value={formData.ingredients}
             onChange={handleChange}
             required
-            placeholder="Ingredients"
+            placeholder="Ingredients (comma separated)"
             className="w-full p-3 rounded bg-gray-700 border border-gray-600 h-32 
                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all"
           />
@@ -80,7 +80,7 @@ const EditRecipe = ({ recipes, setRecipes }) => {
             value={formData.steps}
             onChange={handleChange}
             required
-            placeholder="Steps"
+            placeholder="Preparation Steps"
             className="w-full p-3 rounded bg-gray-700 border border-gray-600 h-32 
                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all"
           />
@@ -90,6 +90,14 @@ const EditRecipe = ({ recipes, setRecipes }) => {
             onChange={handleChange}
             required
             placeholder="Category"
+            className="w-full p-3 rounded bg-gray-700 border border-gray-600 
+                       focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all"
+          />
+          <input
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+            placeholder="Image URL (optional)"
             className="w-full p-3 rounded bg-gray-700 border border-gray-600 
                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all"
           />
