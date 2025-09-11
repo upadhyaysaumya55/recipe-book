@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const RecipeForm = ({ recipes, setRecipes }) => {
+const RecipeForm = ({ recipes = [], setRecipes }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -29,6 +29,9 @@ const RecipeForm = ({ recipes, setRecipes }) => {
       return;
     }
 
+    // Fallback: ensure recipes is always an array
+    const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
+
     const newRecipe = {
       id: Date.now(),
       name,
@@ -40,9 +43,10 @@ const RecipeForm = ({ recipes, setRecipes }) => {
       createdAt: new Date().toISOString(),
     };
 
-    const updatedRecipes = [...recipes, newRecipe];
+    const updatedRecipes = [...storedRecipes, newRecipe];
+
     localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
-    setRecipes(updatedRecipes);
+    setRecipes && setRecipes(updatedRecipes);
 
     toast.success("✅ Recipe added to menu!", { autoClose: 2000 });
 
@@ -53,7 +57,7 @@ const RecipeForm = ({ recipes, setRecipes }) => {
     setImage("");
     setCategory("");
 
-    // Navigate to Menu after short delay and pass newRecipe ID for highlight
+    // Navigate to Menu after short delay with highlight
     setTimeout(() => navigate("/menu", { state: { highlightId: newRecipe.id } }), 800);
   };
 
