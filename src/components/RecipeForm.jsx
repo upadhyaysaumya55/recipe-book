@@ -6,8 +6,9 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuidv4 } from "uuid";  // ✅ Import UUID
 
-const RecipeForm = ({ recipes = [], setRecipes }) => {
+const RecipeForm = ({ recipes, setRecipes }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -29,11 +30,8 @@ const RecipeForm = ({ recipes = [], setRecipes }) => {
       return;
     }
 
-    // Fallback: ensure recipes is always an array
-    const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-
     const newRecipe = {
-      id: Date.now(),
+      id: uuidv4(),  // ✅ Use UUID for unique recipe IDs
       name,
       ingredients,
       steps,
@@ -43,10 +41,9 @@ const RecipeForm = ({ recipes = [], setRecipes }) => {
       createdAt: new Date().toISOString(),
     };
 
-    const updatedRecipes = [...storedRecipes, newRecipe];
-
+    const updatedRecipes = [...recipes, newRecipe];
     localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
-    setRecipes && setRecipes(updatedRecipes);
+    setRecipes(updatedRecipes);
 
     toast.success("✅ Recipe added to menu!", { autoClose: 2000 });
 
@@ -57,7 +54,7 @@ const RecipeForm = ({ recipes = [], setRecipes }) => {
     setImage("");
     setCategory("");
 
-    // Navigate to Menu after short delay with highlight
+    // Navigate to Menu after short delay and pass newRecipe ID for highlight
     setTimeout(() => navigate("/menu", { state: { highlightId: newRecipe.id } }), 800);
   };
 
