@@ -33,7 +33,7 @@ import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
-// ✅ Scroll to top on route change
+// Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -42,22 +42,24 @@ const ScrollToTop = () => {
   return null;
 };
 
-// ✅ Home component
+// Home component with "View All Recipes" feature
 function Home({ recipes, setRecipes, search, setSearch, addRecipe }) {
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+  const [showViewAll, setShowViewAll] = useState(false); // ✅ New state
   const navigate = useNavigate();
 
-  // Filter whenever recipes/search changes
   useEffect(() => {
     const q = search.toLowerCase();
-    setFilteredRecipes(
-      recipes.filter(
-        (recipe) =>
-          recipe.name.toLowerCase().includes(q) ||
-          recipe.category.toLowerCase().includes(q) ||
-          recipe.ingredients.toLowerCase().includes(q)
-      )
+    const filtered = recipes.filter(
+      (recipe) =>
+        recipe.name.toLowerCase().includes(q) ||
+        recipe.category.toLowerCase().includes(q) ||
+        recipe.ingredients.toLowerCase().includes(q)
     );
+    setFilteredRecipes(filtered);
+
+    // Show "View All" button if more than 3 recipes exist
+    setShowViewAll(recipes.length > 3);
   }, [recipes, search]);
 
   const handleSearch = (query) => {
@@ -71,16 +73,17 @@ function Home({ recipes, setRecipes, search, setSearch, addRecipe }) {
     setFilteredRecipes(filtered);
   };
 
-  // Delete recipe
   const handleDelete = (id) => {
     const updated = recipes.filter((r) => r.id !== id);
     setRecipes(updated);
-    localStorage.setItem("recipes", JSON.stringify(updated));
   };
 
-  // Edit recipe
   const handleEdit = (id) => {
     navigate(`/edit-recipe/${id}`);
+  };
+
+  const handleViewAll = () => {
+    navigate("/menu");
   };
 
   return (
@@ -108,12 +111,12 @@ function Home({ recipes, setRecipes, search, setSearch, addRecipe }) {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredRecipes.length ? (
-                filteredRecipes.map((recipe) => (
+                filteredRecipes.slice(0, 3).map((recipe) => (
                   <div key={recipe.id} className="relative">
                     <RecipeCard
                       recipe={recipe}
                       onDelete={() => handleDelete(recipe.id)}
-                      isOwner={true} // Assuming all recipes in Home are editable by current user
+                      isOwner={true}
                     />
 
                     <div className="flex justify-center gap-3 mt-3">
@@ -138,6 +141,18 @@ function Home({ recipes, setRecipes, search, setSearch, addRecipe }) {
                 </p>
               )}
             </div>
+
+            {/* View All Recipes Button */}
+            {showViewAll && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={handleViewAll}
+                  className="px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-lg font-semibold transition"
+                >
+                  View All Recipes
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -162,7 +177,7 @@ function App() {
 
   const [search, setSearch] = useState("");
 
-  // Keep localStorage in sync
+  // Keep localStorage always in sync
   useEffect(() => {
     localStorage.setItem("recipes", JSON.stringify(recipes));
   }, [recipes]);
@@ -172,7 +187,7 @@ function App() {
   }, []);
 
   const addRecipe = (newRecipe) => {
-    setRecipes((prev) => [newRecipe, ...prev]); // ✅ Add new recipe at top live
+    setRecipes((prev) => [newRecipe, ...prev]);
   };
 
   return (
@@ -194,9 +209,7 @@ function App() {
               />
             }
           />
-          {/* Updated Menu route to pass setRecipes for live updates */}
           <Route path="/menu" element={<Menu recipes={recipes} setRecipes={setRecipes} />} />
-
           <Route path="/about" element={<About />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />

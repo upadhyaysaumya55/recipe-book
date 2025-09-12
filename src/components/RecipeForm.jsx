@@ -6,9 +6,9 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { v4 as uuidv4 } from "uuid";  // ✅ Import UUID
+import { v4 as uuidv4 } from "uuid";
 
-const RecipeForm = ({ recipes, setRecipes }) => {
+const RecipeForm = ({ addRecipe }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ const RecipeForm = ({ recipes, setRecipes }) => {
     }
 
     const newRecipe = {
-      id: uuidv4(),  // ✅ Use UUID for unique recipe IDs
+      id: uuidv4(),
       name,
       ingredients,
       steps,
@@ -41,21 +41,19 @@ const RecipeForm = ({ recipes, setRecipes }) => {
       createdAt: new Date().toISOString(),
     };
 
-    const updatedRecipes = [...recipes, newRecipe];
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
-    setRecipes(updatedRecipes);
+    addRecipe(newRecipe);
 
     toast.success("✅ Recipe added to menu!", { autoClose: 2000 });
 
-    // Reset form
     setName("");
     setIngredients("");
     setSteps("");
     setImage("");
     setCategory("");
 
-    // Navigate to Menu after short delay and pass newRecipe ID for highlight
-    setTimeout(() => navigate("/menu", { state: { highlightId: newRecipe.id } }), 800);
+    setTimeout(() => {
+      navigate("/menu", { state: { highlightId: newRecipe.id } });
+    }, 800);
   };
 
   return (

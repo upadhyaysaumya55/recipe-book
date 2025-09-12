@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+// src/components/Menu.jsx
+import React, { useEffect, useState, useCallback } from "react";
 import RecipeCard from "./RecipeCard";
 import SearchBar from "./SearchBar";
 import { motion } from "framer-motion";
@@ -6,13 +7,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Menu = ({ recipes, currentUser, onDelete }) => {
+const Menu = ({ recipes = [], currentUser, onDelete }) => {
   const [search, setSearch] = useState("");
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const location = useLocation();
-  const highlightRef = useRef(null);
   const navigate = useNavigate();
 
+  // ✅ Filter recipes
   const filterRecipes = useCallback(
     (query) => {
       if (!query.trim()) {
@@ -39,20 +40,24 @@ const Menu = ({ recipes, currentUser, onDelete }) => {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
-  // Scroll and highlight newly added recipe with fallback
+  // ✅ Highlight newly added recipe with smooth effect
   useEffect(() => {
     const highlightId = location.state?.highlightId;
-    if (highlightId && highlightRef.current) {
-      highlightRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      highlightRef.current.classList.add("ring-4", "ring-yellow-500");
+    if (highlightId) {
       const timer = setTimeout(() => {
-        if (highlightRef.current) {
-          highlightRef.current.classList.remove("ring-4", "ring-yellow-500");
+        const el = document.getElementById(`recipe-${highlightId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          el.classList.add("ring-4", "ring-yellow-500", "transition-all", "duration-1000");
+          // Remove highlight after delay
+          setTimeout(() => {
+            el.classList.remove("ring-4", "ring-yellow-500");
+          }, 3000);
         }
-      }, 2500);
+      }, 100); // small delay to ensure DOM is rendered
       return () => clearTimeout(timer);
     }
-  }, [location.state]);
+  }, [location.state, filteredRecipes]);
 
   const handleSearch = (query) => {
     setSearch(query);
@@ -82,18 +87,19 @@ const Menu = ({ recipes, currentUser, onDelete }) => {
           transition={{ duration: 1 }}
         >
           {filteredRecipes.map((recipe) => {
-            const isHighlight = location.state?.highlightId === recipe.id;
             const isOwner = currentUser && recipe.user === currentUser.email;
+            const isHighlight = location.state?.highlightId === recipe.id;
 
             return (
               <div
                 key={recipe.id}
-                ref={isHighlight ? highlightRef : null}
-                className="relative"
+                id={`recipe-${recipe.id}`}
+                className={`relative ${isHighlight ? "ring-yellow-500" : ""}`}
               >
-                {/* Pass onDelete to RecipeCard if you want internal deletion later */}
-                <RecipeCard recipe={recipe} isOwner={false} onDelete={onDelete} />
+                {/* Card */}
+                <RecipeCard recipe={recipe} isOwner={false} />
 
+                {/* Edit/Delete only if user owns recipe */}
                 {isOwner && (
                   <div className="flex justify-end gap-2 mt-4 mb-6">
                     <button
